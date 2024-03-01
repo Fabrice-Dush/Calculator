@@ -1,0 +1,226 @@
+"use strict";
+
+//? DOM elements
+const prevEl = document.querySelector(".prevEl");
+const currentEl = document.querySelector(".currentEl");
+const btnEqual = document.querySelector(".btn-equal");
+const calculatorEl = document.querySelector(".calculator");
+const btnClearAll = document.querySelector(".btn-clear");
+const btnClearOne = document.querySelector(".btn-clearOne");
+
+//? Globals
+let prevOperand, currentOperand, operation;
+
+const updateUI = function () {
+  currentEl.textContent = currentOperand;
+  if (operation) prevEl.textContent = `${prevOperand} ${operation}`;
+  else prevEl.textContent = `${prevOperand}`;
+};
+
+const getNumber = function (number) {
+  if (number === "." && currentOperand.includes(".")) return;
+  currentOperand += number;
+};
+
+const getOperation = function (operator) {
+  if (!currentOperand) return;
+
+  if (currentOperand && operation) {
+    compute();
+  }
+  operation = operator;
+  prevOperand = currentOperand;
+  currentOperand = "";
+};
+
+const compute = function () {
+  const prevNumber = Number.parseFloat(prevOperand);
+  const currentNumber = Number.parseFloat(currentOperand);
+
+  let computed;
+  switch (operation) {
+    case "+":
+      computed = prevNumber + currentNumber;
+      break;
+    case "-":
+      computed = prevNumber - currentNumber;
+      break;
+    case "*":
+      computed = prevNumber * currentNumber;
+      break;
+    case "/":
+      computed = prevNumber / currentNumber;
+      break;
+    default:
+      return;
+  }
+
+  currentOperand = computed;
+  prevOperand = "";
+  operation = null;
+};
+
+const clear = function () {
+  currentOperand = "";
+  prevOperand = "";
+  operation = null;
+};
+clear();
+
+//? Event handlers
+calculatorEl.addEventListener("click", function (event) {
+  const btn = event.target.closest(".btn-number");
+  if (!btn) return;
+  getNumber(btn.dataset.number);
+  updateUI();
+});
+
+calculatorEl.addEventListener("click", function (event) {
+  const btn = event.target.closest(".btn-operation");
+  if (!btn) return;
+  getOperation(btn.dataset.operator);
+  updateUI();
+});
+
+btnEqual.addEventListener("click", function () {
+  compute();
+  updateUI();
+});
+
+btnClearAll.addEventListener("click", function () {
+  clear();
+  updateUI();
+});
+
+btnClearOne.addEventListener("click", function () {
+  currentOperand = currentOperand.slice(0, -1);
+  updateUI();
+});
+
+
+// HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="prevEl"></div>
+      <div class="currentEl"></div>
+      <button class="btn-clear">CE</button>
+      <button class="btn-clearOne">C</button>
+      <button class="btn-operation" data-operator="+">+</button>
+      <button class="btn-number" data-number="7">7</button>
+      <button class="btn-number" data-number="8">8</button>
+      <button class="btn-number" data-number="9">9</button>
+      <button class="btn-operation" data-operator="/">/</button>
+      <button class="btn-number" data-number="4">4</button>
+      <button class="btn-number" data-number="5">5</button>
+      <button class="btn-number" data-number="6">6</button>
+      <button class="btn-operation" data-operator="*">X</button>
+      <button class="btn-number" data-number="1">1</button>
+      <button class="btn-number" data-number="2">2</button>
+      <button class="btn-number" data-number="3">3</button>
+      <button class="btn-operation" data-operator="-">-</button>
+      <button class="btn-number" data-number=".">.</button>
+      <button class="btn-number" data-number="0">0</button>
+      <button class="btn-equal">=</button>
+    </div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+// css
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;600;700;800&display=swap");
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  color: 1;
+}
+
+.calculator {
+  width: 60rem;
+  margin: 5rem auto;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+button {
+  border: none;
+  outline: none;
+  padding: 2.4rem 6.4rem;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 2rem;
+  /* border-collapse: collapse; */
+}
+
+.btn-equal {
+  grid-column: 3 / span 2;
+  background-color: #7048e8;
+  color: #fff;
+  font-size: 3.2rem;
+}
+
+.btn-clear,
+.btn-clearOne {
+  background-color: #7048e8;
+  color: #fff;
+}
+
+.btn-clear {
+  grid-column: span 2;
+}
+
+.btn-operation {
+  font-size: 2.4rem;
+  color: #343a40;
+}
+
+.prevEl,
+.currentEl {
+  height: 5rem;
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  font-size: 2rem;
+  padding: 3.2rem 1.8rem;
+}
+
+.currentEl {
+  background-color: #cbeee5;
+}
+
+.prevEl {
+  background-color: #edf2ff;
+}
