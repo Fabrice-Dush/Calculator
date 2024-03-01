@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Rubik:wght@400;500;600;700;800&display=swap");
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  color: 1;
+}
+
+.calculator {
+  width: 60rem;
+  margin: 5rem auto;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+button {
+  border: none;
+  outline: none;
+  padding: 2.4rem 6.4rem;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 2rem;
+  /* border-collapse: collapse; */
+}
+
+.btn-equal {
+  grid-column: 3 / span 2;
+  background-color: #7048e8;
+  color: #fff;
+  font-size: 3.2rem;
+}
+
+.btn-clear {
+  background-color: #7048e8;
+  color: #fff;
+}
+
+.btn-operation {
+  font-size: 2.4rem;
+  color: #343a40;
+}
+
+.computation {
+  height: 5rem;
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  font-size: 2rem;
+  /* padding-right: 1.8rem; */
+  padding: 3.2rem 1.8rem;
+  background-color: #edf2ff;
+}
